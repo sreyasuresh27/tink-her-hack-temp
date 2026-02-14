@@ -398,6 +398,7 @@ Career Path:
 For issues:
 1. Check server console: `npm start`
 2. Check browser DevTools console
-3. Visit http://localhost:3000/api/health
+3. Visit https://cute-biscotti-b3a488.netlify.app/login.html
 4. See DATABASE_SETUP.md for database help
+
 
