@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Midnight Aurora</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #3d57c1 0%, #764ba2 100%);
+      min-height: 100vh;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .login-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 100vh;
+      align-items: center;
+    }
+
+    .login-hero {
+      padding: 60px 40px;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .login-hero h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+
+    .login-hero p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      margin-bottom: 30px;
+      line-height: 1.6;
+    }
+
+    .hero-icon {
+      font-size: 150px;
+      opacity: 0.8;
+    }
+
+    .login-form-section {
+      background: white;
+      padding: 60px 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .login-card {
+      background: transparent;
+      box-shadow: none;
+      border: none;
+    }
+
+    .login-card h2 {
+      color: #333;
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    .login-card .subtitle {
+      color: #999;
+      margin-bottom: 30px;
+      font-size: 0.95rem;
+    }
+
+    #loginForm {
+      display: flex;
+      flex-direction: column;
+    }
+
+    #loginForm label {
+      color: #333;
+      font-weight: 600;
+      margin-top: 20px;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+    }
+
+    #loginForm input {
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      background: #f8f8f8;
+      transition: all 0.3s;
+    }
+
+    #loginForm input:focus {
+      outline: none;
+      border-color: #667eea;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .cta-btn {
+      margin-top: 30px;
+      padding: 14px 30px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+    }
+
+    .signup-text {
+      margin-top: 20px;
+      text-align: center;
+      color: #999;
+      font-size: 0.9rem;
+    }
+
+    .signup-text strong {
+      color: #667eea;
+    }
+
+    @media (max-width: 768px) {
+      .login-wrapper {
+        grid-template-columns: 1fr;
+      }
+
+      .login-hero {
+        padding: 40px 20px;
+        display: none;
+      }
+
+      .login-form-section {
+        padding: 40px 20px;
+        height: auto;
+      }
+
+      .login-hero h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="login-wrapper">
+    <div class="login-hero">
+      <h1>Develop Your Skills</h1>
+      <p>Empower your career with AI-driven skill analysis and personalized learning paths. Unlock hidden talents and
+        advance with confidence.</p>
+      <div class="hero-icon">🚀</div>
+    </div>
+
+    <div class="login-form-section">
+      <div class="login-card">
+        <h2>Welcome Back</h2>
+        <p class="subtitle">Log in to continue your journey</p>
+
+        <form id="authForm">
+          <label for="user">Username</label>
+          <input type="text" id="user" placeholder="Enter your username" required>
+
+          <label for="pass">Password</label>
+          <input type="password" id="pass" placeholder="Enter your password" required
+            style="padding:12px 15px;border:1px solid #ddd;border-radius:8px;font-size:0.95rem;background:#f8f8f8;width:100%;transition:all 0.3s">
+
+          <button type="submit" class="cta-btn">Log In</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script src="login.js"></script>
+</body>
+
+</html>

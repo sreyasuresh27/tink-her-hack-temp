@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Midnight Aurora</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="dashboardContainer">
+    <nav class="navbar">
+      <div class="logo">Midnight Aurora</div>
+      <ul class="nav-links">
+        <li><a href="#dashboard">Dashboard</a></li>
+        <li><a href="#interview">AI Interview</a></li>
+        <li><a href="#trust">Trust Vault</a></li>
+      </ul>
+      <button class="cta-btn" id="logoutBtn">Logout</button>
+    </nav>
+
+    <section id="dashboard" class="section dashboard">
+      <h2>Smart Dashboard</h2>
+      
+      <div class="glass-card" style="margin-bottom: 30px; padding: 2rem;">
+        <h3>Upload Resume</h3>
+        <p style="opacity: 0.7; margin-bottom: 15px;">Upload your resume for AI analysis</p>
+        <input type="file" id="resumeUpload" accept=".pdf,.doc,.docx" style="margin-bottom: 15px;">
+        <button class="cta-btn" id="uploadBtn" style="padding: 8px 20px;">📤 Upload & Analyze</button>
+      </div>
+
+      <div class="dashboard-grid">
+        <div class="glass-card">
+          <h3>Skill-Sync Meter</h3>
+          <div class="meter">
+            <div class="progress" style="width: 65%;"></div>
+          </div>
+        </div>
+
+        <div class="glass-card">
+          <h3>Skill Preparation Chart</h3>
+          <ul>
+            <li>JavaScript: 70% ✅</li>
+            <li>React: 45% ⚠️</li>
+            <li>AI Fundamentals: 30% ❌</li>
+          </ul>
+        </div>
+
+        <div class="glass-card">
+          <h3>Micro-Learning Feed</h3>
+          <ul>
+            <li>5-min React Video</li>
+            <li>AI Skill Gap Article</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    document.getElementById('uploadBtn').addEventListener('click', function() {
+      const fileInput = document.getElementById('resumeUpload');
+      if (fileInput.files.length === 0) {
+        alert('Please select a resume file');
+        return;
+      }
+      
+      const formData = new FormData();
+      formData.append('resume', fileInput.files[0]);
+      
+      const btn = this;
+      btn.disabled = true;
+      btn.textContent = '⏳ Uploading...';
+      
+      fetch('/upload-resume', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        btn.disabled = false;
+        btn.textContent = '📤 Upload & Analyze';
+        if (data.success) {
+          alert('Resume uploaded successfully!\nAnalysis: ' + data.message);
+          document.getElementById('resumeUpload').value = '';
+        } else {
+          alert('Upload failed: ' + data.error);
+        }
+      })
+      .catch(error => {
+        btn.disabled = false;
+        btn.textContent = '📤 Upload & Analyze';
+        console.error('Error:', error);
+        alert('Error uploading resume. Please try again.');
+      });
+    });
+  </script>
+</body>
+</html>

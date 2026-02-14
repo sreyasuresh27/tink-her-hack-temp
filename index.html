@@ -1,0 +1,1711 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | The Pivot</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    :root {
+      --pri: #0D9488;
+      --pri-l: #14B8A6;
+      --pri-d: #0F766E;
+      --orange: #F97316;
+      --yellow: #FBBF24;
+      --dark: #1E293B;
+      --dark2: #334155;
+      --gray: #64748B;
+      --gray-l: #94A3B8;
+      --bg: #F8FAFC;
+      --white: #FFF;
+      --r: 12px;
+      --r-lg: 20px;
+      --r-pill: 50px;
+      --sh: 0 4px 12px rgba(0, 0, 0, 0.08);
+      --sh-lg: 0 10px 30px rgba(0, 0, 0, 0.1)
+    }
+
+    html {
+      scroll-behavior: smooth
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      color: var(--dark);
+      background: var(--bg);
+      min-height: 100vh;
+      display: flex
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit
+    }
+
+    img {
+      max-width: 100%;
+      display: block
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 240px;
+      background: var(--white);
+      border-right: 1px solid #E2E8F0;
+      height: 100vh;
+      position: fixed;
+      display: flex;
+      flex-direction: column;
+      padding: 24px 0;
+      z-index: 10
+    }
+
+    .sidebar-logo {
+      padding: 0 24px 30px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--dark)
+    }
+
+    .sidebar-logo .icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--pri), var(--pri-l));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 800;
+      font-size: 1rem
+    }
+
+    .sidebar-nav {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 0 12px
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border-radius: var(--r);
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--gray);
+      cursor: pointer;
+      transition: all .25s
+    }
+
+    .nav-item:hover {
+      background: rgba(13, 148, 136, 0.06);
+      color: var(--pri)
+    }
+
+    .nav-item.active {
+      background: rgba(13, 148, 136, 0.1);
+      color: var(--pri);
+      font-weight: 600
+    }
+
+    .nav-item .ni {
+      font-size: 1.1rem;
+      width: 24px;
+      text-align: center
+    }
+
+    .nav-divider {
+      height: 1px;
+      background: #E2E8F0;
+      margin: 12px 24px
+    }
+
+    .sidebar-footer {
+      padding: 12px 24px
+    }
+
+    .logout-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      border-radius: var(--r);
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #EF4444;
+      cursor: pointer;
+      border: none;
+      background: none;
+      width: 100%;
+      font-family: inherit;
+      transition: all .25s
+    }
+
+    .logout-btn:hover {
+      background: rgba(239, 68, 68, 0.06)
+    }
+
+    /* Main */
+    .main {
+      margin-left: 240px;
+      flex: 1;
+      padding: 30px 36px;
+      min-height: 100vh
+    }
+
+    /* Header */
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px
+    }
+
+    .top-bar h1 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--dark)
+    }
+
+    .top-bar h1 span {
+      color: var(--pri)
+    }
+
+    .top-right {
+      display: flex;
+      align-items: center;
+      gap: 16px
+    }
+
+    .sync-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(13, 148, 136, 0.08);
+      color: var(--pri);
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 8px 18px;
+      border-radius: var(--r-pill)
+    }
+
+    .sync-badge .dot {
+      width: 8px;
+      height: 8px;
+      background: var(--pri);
+      border-radius: 50%;
+      animation: pulse 2s infinite
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      50% {
+        opacity: .4
+      }
+    }
+
+    .avatar-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid var(--pri);
+      cursor: pointer
+    }
+
+    .avatar-btn img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover
+    }
+
+    /* Cards Grid */
+    .grid {
+      display: grid;
+      gap: 20px;
+      margin-bottom: 32px
+    }
+
+    .grid-4 {
+      grid-template-columns: repeat(4, 1fr)
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(3, 1fr)
+    }
+
+    .grid-2 {
+      grid-template-columns: 1fr 1fr
+    }
+
+    .card {
+      background: var(--white);
+      border: 1px solid #E2E8F0;
+      border-radius: var(--r-lg);
+      padding: 24px;
+      transition: all .3s
+    }
+
+    .card:hover {
+      box-shadow: var(--sh-lg);
+      transform: translateY(-3px)
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px
+    }
+
+    .card-header h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--dark)
+    }
+
+    .card-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--r);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem
+    }
+
+    .ci-teal {
+      background: rgba(13, 148, 136, 0.1)
+    }
+
+    .ci-orange {
+      background: rgba(249, 115, 22, 0.1)
+    }
+
+    .ci-purple {
+      background: rgba(139, 92, 246, 0.1)
+    }
+
+    .ci-pink {
+      background: rgba(236, 72, 153, 0.1)
+    }
+
+    .stat-val {
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin-bottom: 4px
+    }
+
+    .stat-val.teal {
+      color: var(--pri)
+    }
+
+    .stat-val.orange {
+      color: var(--orange)
+    }
+
+    .stat-val.purple {
+      color: #8B5CF6
+    }
+
+    .stat-val.pink {
+      color: #EC4899
+    }
+
+    .stat-sub {
+      font-size: 0.82rem;
+      color: var(--gray)
+    }
+
+    /* Section Title */
+    .sec-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px
+    }
+
+    /* Skills */
+    .skill-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px
+    }
+
+    .skill-chip {
+      text-align: center;
+      padding: 18px 12px;
+      border-radius: var(--r);
+      border: 1px solid #E2E8F0;
+      background: var(--white);
+      transition: all .3s;
+      cursor: pointer
+    }
+
+    .skill-chip:hover {
+      border-color: var(--pri);
+      transform: translateY(-2px);
+      box-shadow: var(--sh)
+    }
+
+    .skill-chip .stars {
+      font-size: 1rem;
+      margin-bottom: 6px;
+      letter-spacing: 2px
+    }
+
+    .skill-chip .sname {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--dark)
+    }
+
+    /* Progress Bar */
+    .prog-wrap {
+      margin: 10px 0
+    }
+
+    .prog-bar {
+      height: 8px;
+      background: #E2E8F0;
+      border-radius: 8px;
+      overflow: hidden
+    }
+
+    .prog-fill {
+      height: 100%;
+      border-radius: 8px;
+      transition: width 1s ease
+    }
+
+    .prog-fill.teal {
+      background: linear-gradient(90deg, var(--pri), var(--pri-l))
+    }
+
+    .prog-fill.orange {
+      background: linear-gradient(90deg, #F97316, #FBBF24)
+    }
+
+    .prog-fill.purple {
+      background: linear-gradient(90deg, #8B5CF6, #A78BFA)
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+      border-bottom: 2px solid #E2E8F0;
+      padding-bottom: 0;
+      flex-wrap: wrap
+    }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      padding: 10px 20px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--gray);
+      cursor: pointer;
+      font-family: inherit;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      transition: all .25s;
+      white-space: nowrap
+    }
+
+    .tab-btn:hover {
+      color: var(--pri)
+    }
+
+    .tab-btn.active {
+      color: var(--pri);
+      border-bottom-color: var(--pri);
+      font-weight: 600
+    }
+
+    .tab-content {
+      display: none
+    }
+
+    .tab-content.active {
+      display: block
+    }
+
+    /* Sprint Cards */
+    .sprint-card {
+      background: var(--white);
+      border: 1px solid #E2E8F0;
+      border-radius: var(--r);
+      padding: 20px;
+      transition: all .3s
+    }
+
+    .sprint-card:hover {
+      box-shadow: var(--sh);
+      transform: translateY(-2px)
+    }
+
+    .sprint-card h4 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 6px
+    }
+
+    .sprint-card p {
+      font-size: 0.82rem;
+      color: var(--gray);
+      margin-bottom: 12px
+    }
+
+    .sprint-meta {
+      font-size: 0.78rem;
+      color: var(--gray-l);
+      margin-top: 8px
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 0.85rem;
+      padding: 10px 22px;
+      border-radius: var(--r-pill);
+      border: none;
+      cursor: pointer;
+      transition: all .3s
+    }
+
+    .btn-pri {
+      background: var(--pri);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(13, 148, 136, 0.3)
+    }
+
+    .btn-pri:hover {
+      background: var(--pri-d);
+      transform: translateY(-2px)
+    }
+
+    .btn-out {
+      background: transparent;
+      border: 1.5px solid #E2E8F0;
+      color: var(--dark)
+    }
+
+    .btn-out:hover {
+      border-color: var(--pri);
+      color: var(--pri)
+    }
+
+    .btn-full {
+      width: 100%;
+      margin-top: 12px
+    }
+
+    /* List items */
+    .list-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: var(--r);
+      margin-bottom: 8px;
+      transition: all .25s;
+      cursor: pointer
+    }
+
+    .list-item:hover {
+      transform: translateX(4px)
+    }
+
+    .list-item.li-teal {
+      background: rgba(13, 148, 136, 0.04);
+      border-left: 3px solid var(--pri)
+    }
+
+    .list-item.li-purple {
+      background: rgba(139, 92, 246, 0.04);
+      border-left: 3px solid #8B5CF6
+    }
+
+    .list-item.li-orange {
+      background: rgba(249, 115, 22, 0.04);
+      border-left: 3px solid var(--orange)
+    }
+
+    .list-item .li-title {
+      font-size: 0.88rem;
+      font-weight: 500
+    }
+
+    .list-item .li-sub {
+      font-size: 0.78rem;
+      color: var(--gray-l)
+    }
+
+    /* Mentor */
+    .form-label {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--gray);
+      margin-bottom: 6px;
+      font-weight: 500
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid #E2E8F0;
+      border-radius: var(--r);
+      font-family: inherit;
+      font-size: 0.88rem;
+      color: var(--dark);
+      background: var(--bg);
+      outline: none;
+      margin-bottom: 14px;
+      transition: border .3s
+    }
+
+    .form-input:focus {
+      border-color: var(--pri);
+      box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.08)
+    }
+
+    select.form-input {
+      cursor: pointer
+    }
+
+    textarea.form-input {
+      resize: none;
+      min-height: 100px
+    }
+
+    /* Chatbot */
+    .chatbot-widget {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000
+    }
+
+    .chatbot-button {
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, var(--pri), var(--pri-d));
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: #fff;
+      box-shadow: 0 6px 20px rgba(13, 148, 136, 0.4);
+      transition: all .3s
+    }
+
+    .chatbot-button:hover {
+      transform: scale(1.1)
+    }
+
+    .chatbot-window {
+      position: absolute;
+      bottom: 70px;
+      right: 0;
+      width: 360px;
+      height: 460px;
+      background: var(--white);
+      border: 1px solid #E2E8F0;
+      border-radius: var(--r-lg);
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(.85) translateY(10px);
+      transition: all .3s;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15)
+    }
+
+    .chatbot-window.active {
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1) translateY(0)
+    }
+
+    .ch-header {
+      background: linear-gradient(135deg, var(--pri), var(--pri-d));
+      color: #fff;
+      padding: 18px 20px;
+      border-radius: var(--r-lg) var(--r-lg) 0 0;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center
+    }
+
+    .ch-close {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.3rem;
+      cursor: pointer
+    }
+
+    .ch-msgs {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px
+    }
+
+    .msg {
+      padding: 10px 14px;
+      border-radius: 14px;
+      max-width: 80%;
+      font-size: 0.85rem
+    }
+
+    .msg-bot {
+      background: #F1F5F9;
+      color: var(--dark);
+      align-self: flex-start
+    }
+
+    .msg-user {
+      background: var(--pri);
+      color: #fff;
+      align-self: flex-end
+    }
+
+    .ch-input-area {
+      padding: 12px;
+      display: flex;
+      gap: 8px;
+      border-top: 1px solid #E2E8F0
+    }
+
+    .ch-inp {
+      flex: 1;
+      border: 1px solid #E2E8F0;
+      background: var(--bg);
+      color: var(--dark);
+      padding: 10px 14px;
+      border-radius: var(--r-pill);
+      font-size: 0.85rem;
+      outline: none;
+      font-family: inherit
+    }
+
+    .ch-inp:focus {
+      border-color: var(--pri)
+    }
+
+    .ch-send {
+      background: var(--pri);
+      border: none;
+      color: #fff;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all .3s
+    }
+
+    .ch-send:hover {
+      background: var(--pri-d)
+    }
+
+    /* Roadmap dots */
+    .road-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      flex: 1
+    }
+
+    .road-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      margin-bottom: 8px;
+      border: 3px solid #E2E8F0
+    }
+
+    .road-dot.done {
+      background: var(--pri);
+      border-color: var(--pri)
+    }
+
+    .road-dot.half {
+      background: rgba(13, 148, 136, 0.4);
+      border-color: var(--pri)
+    }
+
+    .road-label {
+      font-size: 0.82rem;
+      font-weight: 500
+    }
+
+    .road-sub {
+      font-size: 0.75rem;
+      color: var(--gray-l)
+    }
+
+    /* Badges */
+    .badge-card {
+      text-align: center;
+      padding: 24px 16px;
+      border-radius: var(--r);
+      border: 2px solid #E2E8F0;
+      transition: all .3s;
+      cursor: pointer
+    }
+
+    .badge-card:hover {
+      border-color: var(--pri);
+      transform: translateY(-3px);
+      box-shadow: var(--sh)
+    }
+
+    .badge-card .badge-icon {
+      font-size: 2rem;
+      margin-bottom: 8px
+    }
+
+    .badge-card .badge-title {
+      font-size: 0.88rem;
+      font-weight: 600;
+      margin-bottom: 4px
+    }
+
+    .badge-card .badge-sub {
+      font-size: 0.78rem;
+      color: var(--gray-l)
+    }
+
+    @media(max-width:1024px) {
+      .grid-4 {
+        grid-template-columns: repeat(2, 1fr)
+      }
+
+      .grid-3 {
+        grid-template-columns: 1fr 1fr
+      }
+    }
+
+    @media(max-width:768px) {
+      .sidebar {
+        display: none
+      }
+
+      .main {
+        margin-left: 0
+      }
+
+      .grid-4,
+      .grid-3,
+      .grid-2 {
+        grid-template-columns: 1fr
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <a href="landing.html" class="sidebar-logo">
+    </a>
+    <nav class="sidebar-nav">
+      <div class="nav-item active" onclick="loadHome()"><span class="ni">🏠</span> Dashboard</div>
+      <div class="nav-item" onclick="showTab('learning')"><span class="ni">📚</span> Learning</div>
+      <div class="nav-item" onclick="showTab('mentor')"><span class="ni">🤖</span> AI Mentor</div>
+      <div class="nav-item" onclick="showTab('roadmap')"><span class="ni">🛣️</span> Roadmap</div>
+      <div class="nav-item" onclick="showTab('interview')"><span class="ni">🎤</span> Interview</div>
+      <div class="nav-item" onclick="showTab('softskills')"><span class="ni">💬</span> Soft Skills</div>
+      <div class="nav-item" onclick="showTab('trends')"><span class="ni">📈</span> Tech Trends</div>
+      <div class="nav-item" onclick="showTab('community')"><span class="ni">👥</span> Community</div>
+      <div class="nav-divider"></div>
+      <div class="nav-item" onclick="loadAnalytics()"><span class="ni">📊</span> Analytics</div>
+      <div class="nav-item" onclick="loadSecurity()"><span class="ni">🛡️</span> Security</div>
+      <div class="nav-item" onclick="showTab('database')"><span class="ni">🗄️</span> Database</div>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="logout-btn" onclick="handleLogout()">🚪 Log Out</button>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+    <!-- Top Bar -->
+    <div class="top-bar">
+      <h1>🎯 Career <span>Dashboard</span></h1>
+      <div class="top-right">
+        <div class="sync-badge"><span class="dot"></span> Sync Active</div>
+      </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="grid grid-4">
+      <div class="card">
+        <div class="card-header">
+          <h3>Career Score</h3>
+          <div class="card-icon ci-teal">🎯</div>
+        </div>
+        <div class="stat-val teal" id="successScore">72%</div>
+        <div class="stat-sub">Overall career readiness</div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h3>Modules Done</h3>
+          <div class="card-icon ci-orange">📚</div>
+        </div>
+        <div class="stat-val orange" id="completedModules">12</div>
+        <div class="stat-sub">Courses completed</div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h3>Day Streak</h3>
+          <div class="card-icon ci-purple">🔥</div>
+        </div>
+        <div class="stat-val purple" id="streakDays">7</div>
+        <div class="stat-sub">Keep it going!</div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h3>Skill Match</h3>
+          <div class="card-icon ci-pink">📈</div>
+        </div>
+        <div class="stat-val pink">65%</div>
+        <div class="prog-wrap">
+          <div class="prog-bar">
+            <div class="prog-fill teal" id="syncBar" style="width:65%"></div>
+          </div>
+        </div>
+        <div class="stat-sub">3 gaps identified</div>
+      </div>
+    </div>
+
+    <!-- Market Pulse & Skills -->
+    <div class="grid grid-2">
+      <div class="card">
+        <div class="card-header">
+          <h3>📈 Market Pulse</h3>
+        </div>
+        <div class="list-item li-teal">
+          <div>
+            <div class="li-title">React.js</div>
+            <div class="li-sub">⬆️ Trending (24h)</div>
+          </div>
+        </div>
+        <div class="list-item li-purple">
+          <div>
+            <div class="li-title">AI/ML</div>
+            <div class="li-sub">⬆️ Hot (7d)</div>
+          </div>
+        </div>
+        <div class="list-item li-orange">
+          <div>
+            <div class="li-title">Cloud Architecture</div>
+            <div class="li-sub">⬆️ Rising (30d)</div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h3>⭐ Your Skills</h3>
+        </div>
+        <div class="skill-grid" id="skillHeatmap">
+          <div class="skill-chip">
+            <div class="stars" style="color:var(--pri)">★★★★★</div>
+            <div class="sname">JavaScript</div>
+          </div>
+          <div class="skill-chip">
+            <div class="stars" style="color:#8B5CF6">★★★★☆</div>
+            <div class="sname">React</div>
+          </div>
+          <div class="skill-chip">
+            <div class="stars" style="color:var(--orange)">★★★☆☆</div>
+            <div class="sname">Node.js</div>
+          </div>
+          <div class="skill-chip">
+            <div class="stars" style="color:#EC4899">★★★★☆</div>
+            <div class="sname">Python</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabs Section -->
+    <div style="margin-top:16px">
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab(event,'learning')">📚 Learning</button>
+        <button class="tab-btn" onclick="switchTab(event,'mentor')">🤖 Mentor</button>
+        <button class="tab-btn" onclick="switchTab(event,'roadmap')">🛣️ Roadmap</button>
+        <button class="tab-btn" onclick="switchTab(event,'decision')">🎯 Decisions</button>
+        <button class="tab-btn" onclick="switchTab(event,'interview')">🎤 Interview</button>
+        <button class="tab-btn" onclick="switchTab(event,'softskills')">💬 Soft Skills</button>
+        <button class="tab-btn" onclick="switchTab(event,'trends')">📈 Trends</button>
+        <button class="tab-btn" onclick="switchTab(event,'community')">👥 Community</button>
+        <button class="tab-btn" onclick="switchTab(event,'tips')">💡 Tips</button>
+        <button class="tab-btn" onclick="switchTab(event,'vault')">🏆 Vault</button>
+        <button class="tab-btn" onclick="switchTab(event,'database')">🗄️ Database</button>
+      </div>
+
+      <!-- LEARNING TAB -->
+      <div id="learning" class="tab-content active">
+        <h3 class="sec-title">📚 Learning Sprints</h3>
+        <div class="grid grid-3" id="sprintsContainer">
+          <div class="sprint-card">
+            <h4>Advanced React Patterns</h4>
+            <p>Master advanced React concepts and patterns</p>
+            <div class="prog-wrap">
+              <div class="prog-bar">
+                <div class="prog-fill teal" style="width:75%"></div>
+              </div>
+            </div>
+            <div class="sprint-meta">75% • Due Feb 28 • 12 hrs left</div>
+            <button class="btn btn-pri btn-full">Continue Learning</button>
+          </div>
+          <div class="sprint-card">
+            <h4>Node.js Microservices</h4>
+            <p>Build scalable microservices with Node.js</p>
+            <div class="prog-wrap">
+              <div class="prog-bar">
+                <div class="prog-fill purple" style="width:45%"></div>
+              </div>
+            </div>
+            <div class="sprint-meta">45% • Due Mar 15 • 28 hrs left</div>
+            <button class="btn btn-pri btn-full">Start Now</button>
+          </div>
+          <div class="sprint-card">
+            <h4>System Design Basics</h4>
+            <p>Fundamentals of designing scalable systems</p>
+            <div class="prog-wrap">
+              <div class="prog-bar">
+                <div class="prog-fill orange" style="width:20%"></div>
+              </div>
+            </div>
+            <div class="sprint-meta">20% • Due Mar 30 • 70 hrs left</div>
+            <button class="btn btn-out btn-full">Explore</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- MENTOR TAB -->
+      <div id="mentor" class="tab-content">
+        <h3 class="sec-title">🤖 AI Mentor & Gap-to-Career Bridge</h3>
+        <div class="grid grid-2">
+          <div class="card">
+            <h3 style="margin-bottom:16px;font-weight:600">Book a Session</h3>
+            <label class="form-label">Select Date:</label>
+            <input type="date" class="form-input">
+            <label class="form-label">Select Time:</label>
+            <input type="time" class="form-input">
+            <label class="form-label">Duration:</label>
+            <select class="form-input">
+              <option>15 minutes</option>
+              <option>30 minutes</option>
+              <option>60 minutes</option>
+            </select>
+            <button class="btn btn-pri btn-full" onclick="bookMentorSession()">Schedule Session</button>
+          </div>
+          <div class="card">
+            <h3 style="margin-bottom:16px;font-weight:600">Upcoming Sessions</h3>
+            <div class="list-item li-teal">
+              <div>
+                <div class="li-title">React Patterns Deep Dive</div>
+                <div class="li-sub">Feb 15 • 2:00 PM • 30 min</div>
+              </div>
+            </div>
+            <div class="list-item li-purple">
+              <div>
+                <div class="li-title">Career Roadmap Review</div>
+                <div class="li-sub">Feb 18 • 3:30 PM • 60 min</div>
+              </div>
+            </div>
+            <div class="list-item li-orange">
+              <div>
+                <div class="li-title">Interview Prep Session</div>
+                <div class="li-sub">Feb 20 • 4:00 PM • 45 min</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gap-to-Career Bridge Analysis -->
+        <div class="card" style="margin-top:24px">
+          <h3 style="margin-bottom:16px;font-weight:600">🌉 Gap-to-Career Bridge Analysis</h3>
+          <p style="color:var(--gray);margin-bottom:16px;font-size:0.9rem">Personalized roadmap to bridge the gap
+            between current skills and your target role.</p>
+          <div class="grid grid-3">
+            <div style="padding:16px;background:rgba(13,148,136,0.04);border-radius:var(--r)">
+              <div style="font-size:0.85rem;font-weight:600;color:var(--pri);margin-bottom:8px">Your Current Level</div>
+              <div style="font-size:0.95rem;font-weight:700;color:var(--dark)">Mid-level Developer</div>
+              <div style="font-size:0.75rem;color:var(--gray);margin-top:4px">3-4 years experience</div>
+            </div>
+            <div style="padding:16px;background:rgba(139,92,246,0.04);border-radius:var(--r)">
+              <div style="font-size:0.85rem;font-weight:600;color:#8B5CF6;margin-bottom:8px">Career Goal</div>
+              <div style="font-size:0.95rem;font-weight:700;color:var(--dark)">Senior Developer</div>
+              <div style="font-size:0.75rem;color:var(--gray);margin-top:4px">Lead projects & mentor</div>
+            </div>
+            <div style="padding:16px;background:rgba(249,115,22,0.04);border-radius:var(--r)">
+              <div style="font-size:0.85rem;font-weight:600;color:var(--orange);margin-bottom:8px">Timeline</div>
+              <div style="font-size:0.95rem;font-weight:700;color:var(--dark)">12-18 Months</div>
+              <div style="font-size:0.75rem;color:var(--gray);margin-top:4px">Achievable goal</div>
+            </div>
+          </div>
+
+          <div style="margin-top:20px">
+            <h4 style="font-size:0.95rem;margin-bottom:12px;font-weight:600">📊 Required Skills Gap</h4>
+            <div style="display:grid;gap:10px">
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:0.85rem;margin-bottom:5px">
+                  <span>System Design</span><span style="color:var(--orange);font-weight:600">Priority: HIGH</span>
+                </div>
+                <div class="prog-bar">
+                  <div class="prog-fill orange" style="width:35%"></div>
+                </div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:0.85rem;margin-bottom:5px">
+                  <span>Leadership Skills</span><span style="color:var(--pri);font-weight:600">Priority: HIGH</span>
+                </div>
+                <div class="prog-bar">
+                  <div class="prog-fill teal" style="width:45%"></div>
+                </div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:0.85rem;margin-bottom:5px">
+                  <span>Architecture Patterns</span><span style="color:#8B5CF6;font-weight:600">Priority: MEDIUM</span>
+                </div>
+                <div class="prog-bar">
+                  <div class="prog-fill purple" style="width:60%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn btn-pri btn-full"
+            onclick="alert('🎯 Personalized bridge roadmap generated!\n\n✓ System Design Intensive (8 weeks)\n✓ Leadership Mentorship Program\n✓ Architecture Deep Dive\n✓ Monthly progress reviews')">Generate
+            My Bridge Roadmap</button>
+        </div>
+      </div>
+
+      <!-- ROADMAP TAB -->
+      <div id="roadmap" class="tab-content">
+        <h3 class="sec-title">🛣️ Your Career Roadmap</h3>
+        <div class="card">
+          <h3 style="margin-bottom:20px;font-weight:600">Current Role → Senior Developer</h3>
+          <div style="display:flex;gap:4px;margin-bottom:30px;align-items:flex-start">
+            <div class="road-step">
+              <div class="road-dot done"></div>
+              <div class="road-label">Current</div>
+              <div class="road-sub">Mid Dev</div>
+            </div>
+            <div class="road-step">
+              <div class="road-dot half"></div>
+              <div class="road-label">Q2 2026</div>
+              <div class="road-sub">Senior Dev</div>
+            </div>
+            <div class="road-step">
+              <div class="road-dot"></div>
+              <div class="road-label">Q4 2026</div>
+              <div class="road-sub">Tech Lead</div>
+            </div>
+            <div class="road-step">
+              <div class="road-dot"></div>
+              <div class="road-label">2027</div>
+              <div class="road-sub">Architect</div>
+            </div>
+          </div>
+          <h4 style="margin-bottom:12px;font-size:0.95rem">Next Milestone: Senior Developer</h4>
+          <div class="list-item li-teal">
+            <div>
+              <div class="li-title">✅ Complete Advanced React Course</div>
+            </div>
+          </div>
+          <div class="list-item li-purple">
+            <div>
+              <div class="li-title">⏳ Build 2 production projects</div>
+            </div>
+          </div>
+          <div class="list-item li-orange">
+            <div>
+              <div class="li-title">⏳ Master system design</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DECISION TAB -->
+      <div id="decision" class="tab-content">
+        <h3 class="sec-title">🎯 What's Blocking Your Growth?</h3>
+        <div class="card">
+          <p style="color:var(--gray);margin-bottom:12px">Describe your biggest challenge or blocker</p>
+          <textarea id="blockerInput" class="form-input"
+            placeholder="I struggle with... OR I don't know how to..."></textarea>
+          <button class="btn btn-pri btn-full" onclick="solveBlocker()">🤖 Get AI Solution</button>
+          <div id="blockerSolution"
+            style="display:none;margin-top:16px;padding:16px;background:rgba(13,148,136,0.05);border-left:3px solid var(--pri);border-radius:var(--r)">
+            <p id="solutionText" style="font-size:0.88rem;line-height:1.7;color:var(--dark2)"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- INTERVIEW TAB -->
+      <div id="interview" class="tab-content">
+        <h3 class="sec-title">🎤 Interview Prep</h3>
+        <div class="grid grid-2">
+          <div class="card">
+            <h3 style="margin-bottom:14px;font-weight:600">Practice Questions</h3>
+            <div class="list-item li-teal">
+              <div>
+                <div class="li-title">Explain REST API principles</div>
+              </div>
+            </div>
+            <div class="list-item li-purple">
+              <div>
+                <div class="li-title">Design a URL shortener</div>
+              </div>
+            </div>
+            <div class="list-item li-orange">
+              <div>
+                <div class="li-title">Array manipulation algorithms</div>
+              </div>
+            </div>
+            <button class="btn btn-pri btn-full" onclick="startMockInterview()">Start Mock Interview</button>
+          </div>
+          <div class="card">
+            <h3 style="margin-bottom:14px;font-weight:600">Interview Stats</h3>
+            <div style="display:grid;gap:10px">
+              <div style="display:flex;justify-content:space-between;font-size:0.88rem"><span>Sessions
+                  Completed</span><span style="color:var(--pri);font-weight:700">8</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:0.88rem"><span>Questions
+                  Practiced</span><span style="color:#8B5CF6;font-weight:700">45</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:0.88rem"><span>Avg. Score</span><span
+                  style="color:var(--orange);font-weight:700">82%</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:0.88rem"><span>Time This Week</span><span
+                  style="color:var(--pri);font-weight:700">4h 30m</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Enhanced Interview Prep Section -->
+        <div class="card" style="margin-top:24px">
+          <h3 style="margin-bottom:16px;font-weight:600">🎤 Advanced Interview Prep</h3>
+          <div class="grid grid-2">
+            <div>
+              <h4 style="font-size:0.95rem;margin-bottom:12px;font-weight:600">📋 Interview Types</h4>
+              <div class="list-item li-teal">
+                <div>
+                  <div class="li-title">Technical Round</div>
+                  <div class="li-sub">Coding + System Design</div>
+                </div>
+              </div>
+              <div class="list-item li-purple">
+                <div>
+                  <div class="li-title">Behavioral Round</div>
+                  <div class="li-sub">Leadership & Communication</div>
+                </div>
+              </div>
+              <div class="list-item li-orange">
+                <div>
+                  <div class="li-title">Case Study</div>
+                  <div class="li-sub">Real-world problem solving</div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <h4 style="font-size:0.95rem;margin-bottom:12px;font-weight:600">🎯 Your Weak Areas</h4>
+              <div style="display:grid;gap:10px">
+                <div>
+                  <div style="display:flex;justify-content:space-between;font-size:0.85rem;margin-bottom:5px">
+                    <span>System Design</span><span style="color:var(--orange)">⚠️ Needs Work</span>
+                  </div>
+                  <div class="prog-bar">
+                    <div class="prog-fill orange" style="width:45%"></div>
+                  </div>
+                </div>
+                <div>
+                  <div style="display:flex;justify-content:space-between;font-size:0.85rem;margin-bottom:5px">
+                    <span>Behavioral Questions</span><span style="color:var(--pri)">✓ Strong</span>
+                  </div>
+                  <div class="prog-bar">
+                    <div class="prog-fill teal" style="width:85%"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-pri btn-full"
+            onclick="alert('🎬 Starting full mock interview session...\n\n1. Technical Round (45 min)\n2. Follow-up Discussion (15 min)\n3. Feedback Report\n\nGood luck! 💪')">Schedule
+            Full Mock Interview</button>
+        </div>
+      </div>
+
+      <!-- TIPS TAB -->
+      <div id="tips" class="tab-content">
+        <h3 class="sec-title">💡 Daily Tips & Insights</h3>
+        <div class="card">
+          <div style="padding:20px;background:rgba(13,148,136,0.04);border-radius:var(--r);margin-bottom:14px">
+            <div style="font-size:0.82rem;color:var(--gray-l);margin-bottom:8px">Feb 13, 2026 • Tip #127</div>
+            <p style="font-size:0.95rem;line-height:1.7;margin-bottom:10px">Master one design pattern deeply before
+              moving to the next. Companies love seeing you explain a pattern in detail.</p>
+            <span style="font-size:0.82rem;color:var(--pri)">🔥 4.2K views • 89% useful</span>
+          </div>
+          <div style="padding:20px;background:rgba(139,92,246,0.04);border-radius:var(--r)">
+            <div style="font-size:0.82rem;color:var(--gray-l);margin-bottom:8px">Feb 12, 2026 • Insight</div>
+            <p style="font-size:0.95rem;line-height:1.7;margin-bottom:10px">Your streak is 7 days! Keep up this
+              momentum. 15 minutes every day > 2 hours once a week.</p>
+            <span style="font-size:0.82rem;color:#8B5CF6">📈 Learning streak active</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- VAULT TAB -->
+      <div id="vault" class="tab-content">
+        <h3 class="sec-title">🏆 Certificates & Achievements</h3>
+        <div class="grid grid-3">
+          <div class="badge-card">
+            <div class="badge-icon">🎓</div>
+            <div class="badge-title">React Advanced</div>
+            <div class="badge-sub">Feb 10, 2026</div>
+          </div>
+          <div class="badge-card">
+            <div class="badge-icon">🏅</div>
+            <div class="badge-title">7-Day Streak</div>
+            <div class="badge-sub">Active Now</div>
+          </div>
+          <div class="badge-card">
+            <div class="badge-icon">⭐</div>
+            <div class="badge-title">Top Performer</div>
+            <div class="badge-sub">Top 10%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DATABASE TAB -->
+      <div id="database" class="tab-content">
+        <h3 class="sec-title">🗄️ Database Manager</h3>
+        <div class="grid grid-3">
+          <div class="card">
+            <h3 style="margin-bottom:14px;font-weight:600">📊 Status</h3>
+            <div class="list-item li-teal">
+              <div>
+                <div class="li-title" style="color:var(--pri)">🟢 Connected</div>
+                <div class="li-sub">Last synced: 2 min ago</div>
+              </div>
+            </div>
+            <div class="list-item li-purple">
+              <div>
+                <div class="li-title">Supabase PostgreSQL</div>
+                <div class="li-sub">Database Type</div>
+              </div>
+            </div>
+            <button class="btn btn-pri btn-full" onclick="syncDatabase()">🔄 Force Sync</button>
+          </div>
+          <div class="card">
+            <h3 style="margin-bottom:14px;font-weight:600">📈 Statistics</h3>
+            <div style="display:grid;gap:8px;font-size:0.88rem">
+              <div>📄 Resumes: <strong style="color:var(--pri)">3</strong></div>
+              <div>🎯 Skills: <strong style="color:#8B5CF6">24</strong></div>
+              <div>📚 Sprints: <strong style="color:var(--orange)">15</strong></div>
+              <div>📊 Sessions: <strong style="color:var(--pri)">8</strong></div>
+              <div>💾 Storage: <strong style="color:#8B5CF6">2.4 MB / 1 GB</strong></div>
+            </div>
+          </div>
+          <div class="card">
+            <h3 style="margin-bottom:14px;font-weight:600">💾 Actions</h3>
+            <button class="btn btn-out btn-full" onclick="exportData()">📥 Export Data</button>
+            <button class="btn btn-out btn-full" onclick="backupDatabase()">🔄 Backup</button>
+            <button class="btn btn-out btn-full" onclick="clearCache()">🗑️ Clear Cache</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SOFT SKILLS TAB -->
+      <div id="softskills" class="tab-content">
+        <h3 class="sec-title">💬 Soft Skills Transfer</h3>
+        <div class="grid grid-2">
+          <div class="card">
+            <h3 style="margin-bottom:16px;font-weight:600">Your Soft Skills Profile</h3>
+            <div class="list-item li-teal">
+              <div>
+                <div class="li-title">Communication Excellence</div>
+                <div class="li-sub">⭐⭐⭐⭐⭐ Expert Level</div>
+              </div>
+            </div>
+            <div class="list-item li-purple">
+              <div>
+                <div class="li-title">Team Leadership</div>
+                <div class="li-sub">⭐⭐⭐⭐☆ Advanced</div>
+              </div>
+            </div>
+            <div class="list-item li-orange">
+              <div>
+                <div class="li-title">Problem Solving</div>
+                <div class="li-sub">⭐⭐⭐⭐☆ Advanced</div>
+              </div>
+            </div>
+            <div class="list-item li-teal">
+              <div>
+                <div class="li-title">Adaptability</div>
+                <div class="li-sub">⭐⭐⭐⭐⭐ Expert Level</div>
+              </div>
+            </div>
+            <div class="list-item li-purple">
+              <div>
+                <div class="li-title">Critical Thinking</div>
+                <div class="li-sub">⭐⭐⭐⭐☆ Advanced</div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <h3 style="margin-bottom:16px;font-weight:600">Transfer Opportunities</h3>
+            <p style="color:var(--gray);margin-bottom:14px;font-size:0.9rem">Your soft skills can transfer to:</p>
+            <div class="list-item li-teal">
+              <div>
+                <div class="li-title">Product Manager</div>
+                <div class="li-sub">High Match • Leadership + Communication</div>
+              </div>
+            </div>
+            <div class="list-item li-purple">
+              <div>
+                <div class="li-title">Tech Lead</div>
+                <div class="li-sub">High Match • Team Management</div>
+              </div>
+            </div>
+            <div class="list-item li-orange">
+              <div>
+                <div class="li-title">Solutions Architect</div>
+                <div class="li-sub">Medium Match • Problem Solving</div>
+              </div>
+            </div>
+            <button class="btn btn-pri btn-full" onclick="alert('📋 Soft skills roadmap generated!')">Generate
+              Roadmap</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TECH TRENDS TAB -->
+      <div id="trends" class="tab-content">
+        <h3 class="sec-title">📈 Latest Tech Trends & Market Demand</h3>
+        <div class="grid grid-2">
+          <div class="card">
+            <h3 style="margin-bottom:16px;font-weight:600">🔥 Trending Now (24h)</h3>
+            <div class="list-item li-teal">
+              <div>
+                <div class="li-title">AI/Machine Learning</div>
+                <div class="li-sub">↑ +142% • 2,847 jobs posted</div>
+              </div>
+            </div>
+            <div class="list-item li-purple">
+              <div>
+                <div class="li-title">React.js</div>
+                <div class="li-sub">↑ +89% • 1,234 jobs posted</div>
+              </div>
+            </div>
+            <div class="list-item li-orange">
+              <div>
+                <div class="li-title">Cloud Architecture (AWS)</div>
+                <div class="li-sub">↑ +76% • 956 jobs posted</div>
+              </div>
+            </div>
+            <div class="list-item li-teal">
+              <div>
+                <div class="li-title">TypeScript</div>
+                <div class="li-sub">↑ +54% • 678 jobs posted</div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <h3 style="margin-bottom:16px;font-weight:600">📊 Your Skills vs Market</h3>
+            <div style="margin-bottom:20px">
+              <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:0.88rem">
+                <span>JavaScript</span><span style="color:var(--pri);font-weight:600">You: ★★★★★ | Market: ★★★★☆</span>
+              </div>
+              <div class="prog-bar">
+                <div class="prog-fill teal" style="width:100%"></div>
+              </div>
+            </div>
+            <div style="margin-bottom:20px">
+              <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:0.88rem">
+                <span>AI/ML</span><span style="color:#8B5CF6;font-weight:600">You: ★★☆☆☆ | Market: ★★★★★</span>
+              </div>
+              <div class="prog-bar">
+                <div class="prog-fill purple" style="width:60%"></div>
+              </div>
+            </div>
+            <div style="margin-bottom:20px">
+              <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:0.88rem">
+                <span>Cloud (AWS)</span><span style="color:var(--orange);font-weight:600">You: ★★★☆☆ | Market:
+                  ★★★★★</span>
+              </div>
+              <div class="prog-bar">
+                <div class="prog-fill orange" style="width:75%"></div>
+              </div>
+            </div>
+            <button class="btn btn-pri btn-full" onclick="alert('📚 AI/ML learning path recommended!')">Upskill on
+              Demand Tech</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- COMMUNITY SUPPORT TAB -->
+      <div id="community" class="tab-content">
+        <h3 class="sec-title">👥 Community & Peer Support</h3>
+        <div class="grid grid-2">
+          <div class="card">
+            <h3 style="margin-bottom:16px;font-weight:600">🌐 Active Communities</h3>
+            <div class="list-item li-teal">
+              <div>
+                <div class="li-title">React Developer Community</div>
+                <div class="li-sub">👥 1.2M members • 847 online now</div>
+              </div>
+            </div>
+            <div class="list-item li-purple">
+              <div>
+                <div class="li-title">JavaScript Developers</div>
+                <div class="li-sub">👥 2.3M members • 1.5K online now</div>
+              </div>
+            </div>
+            <div class="list-item li-orange">
+              <div>
+                <div class="li-title">Web Dev Career Path</div>
+                <div class="li-sub">👥 345K members • 234 online now</div>
+              </div>
+            </div>
+            <div class="list-item li-teal">
+              <div>
+                <div class="li-title">AI/ML Learning Group</div>
+                <div class="li-sub">👥 892K members • 456 online now</div>
+              </div>
+            </div>
+            <button class="btn btn-pri btn-full" onclick="alert('🔗 Opening community link...')">Join
+              Communities</button>
+          </div>
+          <div class="card">
+            <h3 style="margin-bottom:16px;font-weight:600">🤝 Peer Mentors</h3>
+            <div class="list-item li-teal">
+              <div>
+                <div class="li-title">Sarah Chen (Senior React Dev)</div>
+                <div class="li-sub">⭐⭐⭐⭐⭐ • Available for mentoring</div>
+              </div>
+            </div>
+            <div class="list-item li-purple">
+              <div>
+                <div class="li-title">Marcus Rodriguez (Full Stack)</div>
+                <div class="li-sub">⭐⭐⭐⭐⭐ • 50+ mentees helped</div>
+              </div>
+            </div>
+            <div class="list-item li-orange">
+              <div>
+                <div class="li-title">Priya Sharma (Product Manager)</div>
+                <div class="li-sub">⭐⭐⭐⭐⭐ • Career transition specialist</div>
+              </div>
+            </div>
+            <h3 style="margin-bottom:14px;margin-top:20px;font-weight:600;font-size:0.95rem">💬 Discussion Forum</h3>
+            <div style="background:rgba(13,148,136,0.04);padding:12px;border-radius:var(--r);margin-bottom:12px">
+              <div style="font-size:0.85rem;margin-bottom:4px"><strong>Question:</strong> Best way to transition to
+                AI/ML?</div>
+              <div style="font-size:0.75rem;color:var(--gray)">3 replies • Last active 5 mins ago</div>
+            </div>
+            <button class="btn btn-pri btn-full" onclick="alert('💭 Opening discussion forum...')">View All
+              Discussions</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- CHATBOT -->
+  <div class="chatbot-widget">
+    <button class="chatbot-button" id="chatbotToggle">💬</button>
+    <div class="chatbot-window" id="chatbotWindow">
+      <div class="ch-header"><span>🤖 AI Assistant</span><button class="ch-close" id="chatbotClose">✕</button></div>
+      <div class="ch-msgs" id="chatbotMessages">
+        <div class="msg msg-bot">Hi! 👋 How can I help?</div>
+      </div>
+      <div class="ch-input-area">
+        <input type="text" class="ch-inp" id="chatbotInput" placeholder="Ask me...">
+        <button class="ch-send" id="chatbotSend">📤</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Auth guard - redirect to login if not authenticated
+    if (sessionStorage.getItem('pivoted') !== 'true') {
+      window.location.href = 'login.html';
+    }
+
+    // Load and Display Resume Analysis Data
+    document.addEventListener('DOMContentLoaded', function () {
+      const resumeAnalysis = sessionStorage.getItem('resumeAnalysis');
+      if (resumeAnalysis) {
+        try {
+          const analysis = JSON.parse(resumeAnalysis);
+
+          // Update stats cards
+          document.getElementById('successScore').textContent = analysis.careerScore + '%';
+          document.getElementById('completedModules').textContent = analysis.skillCount;
+          document.getElementById('streakDays').textContent = analysis.yearsExperience;
+          document.getElementById('syncBar').style.width = analysis.readinessPercentage + '%';
+
+          // Update top bar header with career level
+          const topBar = document.querySelector('.top-bar h1');
+          if (topBar) {
+            topBar.innerHTML = '🎯 ' + analysis.careerLevel + ' <span>Dashboard</span>';
+          }
+
+          // Update skill chips with actual skills
+          const skillHeatmap = document.getElementById('skillHeatmap');
+          if (skillHeatmap) {
+            skillHeatmap.innerHTML = '';
+            analysis.skills.forEach((skill, index) => {
+              const stars = ['★★★★★', '★★★★☆', '★★★☆☆', '★★☆☆☆', '★☆☆☆☆'];
+              const colors = ['var(--pri)', '#8B5CF6', 'var(--orange)', '#EC4899', '#14B8A6'];
+              const chip = document.createElement('div');
+              chip.className = 'skill-chip';
+              chip.innerHTML = `<div class="stars" style="color:${colors[index % 5]}">${stars[index % 5]}</div><div class="sname">${skill}</div>`;
+              skillHeatmap.appendChild(chip);
+            });
+          }
+
+          // Show resume info alert
+          setTimeout(() => {
+            alert(`📊 Resume Analysis Complete!\n\n✅ Career Level: ${analysis.careerLevel}\n💻 Skills Found: ${analysis.skillCount}\n🎯 Years Exp: ${analysis.yearsExperience}\n📈 Career Score: ${analysis.careerScore}%\n🎪 Target Roles: ${analysis.potentialRoles.join(', ')}\n\nYour dashboard has been updated with accurate data!`);
+          }, 500);
+
+        } catch (error) {
+          console.error('Error loading resume analysis:', error);
+        }
+      }
+    });
+
+    // Dashboard Chatbot Logic - Real Gemini API
+    const GEMINI_API_KEY = 'AIzaSyAjgCF-1g22IfKZcE9befQY2urubPojDmA';
+    const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
+
+    const chatbotToggle = document.getElementById('chatbotToggle');
+    const chatbotClose = document.getElementById('chatbotClose');
+    const chatbotWindow = document.getElementById('chatbotWindow');
+    const chatbotInput = document.getElementById('chatbotInput');
+    const chatbotSend = document.getElementById('chatbotSend');
+    const chatbotMessages = document.getElementById('chatbotMessages');
+
+    chatbotToggle.addEventListener('click', () => chatbotWindow.classList.toggle('active'));
+    chatbotClose.addEventListener('click', () => chatbotWindow.classList.remove('active'));
+
+    async function handleChatbotSend() {
+      const message = chatbotInput.value.trim();
+      if (!message) return;
+
+      addMsg(message, 'user');
+      chatbotInput.value = '';
+
+      // Show thinking state
+      const thinkingId = 'bot-thinking-' + Date.now();
+      const thinkingMsg = addMsg("Thinking... 🤔", 'bot', thinkingId);
+
+      try {
+        const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: `You are an AI career coach for 'The Pivot'. Help the user with their dashboard and career roadmap. User asks: ${message}` }] }]
+          })
+        });
+
+        if (!response.ok) throw new Error('API Error');
+        const data = await response.json();
+        const apiResponse = data.candidates[0].content.parts[0].text;
+
+        // Remove thinking message and add real response
+        const msgElement = document.getElementById(thinkingId);
+        if (msgElement) msgElement.remove();
+        addMsg(apiResponse, 'bot');
+
+      } catch (err) {
+        console.error('API Error:', err);
+        const msgElement = document.getElementById(thinkingId);
+        if (msgElement) msgElement.textContent = "I'm having trouble connecting to my brain right now. Please try again or check your connection!";
+      }
+    }
+
+    chatbotSend.addEventListener('click', handleChatbotSend);
+    chatbotInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleChatbotSend(); });
+
+    function addMsg(t, type, id = null) {
+      const d = document.createElement('div');
+      d.className = `msg msg-${type}`;
+      if (id) d.id = id;
+      d.textContent = t;
+      chatbotMessages.appendChild(d);
+      chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+      return d;
+    }
+
+    // Tabs
+    function switchTab(e, name) { document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active')); document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); document.getElementById(name).classList.add('active'); if (e && e.target) e.target.classList.add('active') }
+    function showTab(name) { document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active')); document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); document.getElementById(name).classList.add('active'); document.querySelector(`button[onclick="switchTab(event,'${name}')"]`)?.classList.add('active'); document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')) }
+
+    // Navigation handlers
+    function loadHome() { alert('🏠 HOME\n\n✓ Resume Status: Loaded\n✓ Skills Tracked: 15\n✓ Last Sync: 2 minutes ago') }
+    function loadAnalytics() { alert('📊 YOUR ANALYTICS\n\n✓ Courses Completed: 5\n✓ Learning Hours: 12.5\n✓ Skill Growth: +12%\n✓ Login Streak: 8 days\n✓ Confidence Score: 72%') }
+    function loadSecurity() { alert('🔐 SECURITY\n\n✓ Password: Strong\n✓ 2FA: Disabled\n✓ Encryption: AES-256\n✓ GDPR: Compliant\n✓ Profile: Private') }
+    function handleLogout() { if (confirm('Are you sure you want to logout?\n\nYour progress is auto-saved.')) { sessionStorage.removeItem('pivoted'); window.location.href = 'login.html' } }
+
+    // Feature functions
+    function bookMentorSession() { alert('🎓 Mentor session booking confirmed!\n\nA calendar invite has been sent.') }
+    function solveBlocker() { const b = document.getElementById('blockerInput').value.trim(); if (!b) { alert('Please describe your blocker first'); return } document.getElementById('solutionText').innerHTML = '<strong>Action plan:</strong><br>1. Break it into smaller tasks<br>2. Allocate 30 min daily to one task<br>3. Use recommended courses<br>4. Track progress in sprints<br>💡 Progress over perfection!'; document.getElementById('blockerSolution').style.display = 'block' }
+    function startMockInterview() { alert('🎤 Mock Interview Starting...\n\n"Tell me about a challenging project you worked on."') }
+    function syncDatabase() { alert('🔄 Sync completed in 1.2 seconds!\n\nAll data is now in sync.') }
+    function exportData() { alert('📥 Exporting your data...\n\nDownload will start automatically.') }
+    function backupDatabase() { alert('🔄 Backup created successfully!\n\nBackup ID: BK_2026021_001') }
+    function clearCache() { if (confirm('Clear cache? Your stored data will NOT be deleted.')) { localStorage.clear(); alert('✓ Cache cleared!') } }
+    function updateSuccessScore(s) { if (s) { const t = Math.min(s + Math.min(parseInt(document.getElementById('completedModules').textContent) * 2, 20) + Math.min(parseInt(document.getElementById('streakDays').textContent) * 0.5, 8), 100); document.getElementById('successScore').textContent = Math.round(t) + '%' } }
+
+    // Sidebar active state
+    document.querySelectorAll('.nav-item').forEach(item => { item.addEventListener('click', function () { document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); this.classList.add('active') }) });
+  </script>
+</body>
+
+</html>

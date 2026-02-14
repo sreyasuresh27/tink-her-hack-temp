@@ -1,420 +1,410 @@
-<p align="center">
-  <img src="./img.png" alt="Project Banner" width="100%">
-</p>
+# The Pivot - Resume-Based Dashboard System
 
-# [Project Name] 🎯
+## Overview
 
-## Basic Details
-
-### Team Name: [Name]
-
-### Team Members
-- Member 1: [Name] - [College]
-- Member 2: [Name] - [College]
-
-### Hosted Project Link
-[mention your project hosted link here]
-
-### Project Description
-[2-3 lines about what your project does]
-
-### The Problem statement
-[What problem are you solving?]
-
-### The Solution
-[How are you solving it?]
+Your dashboard now works **entirely based on resume analysis**. Upload a resume → AI analyzes it → Dashboard and all features populate automatically with your data.
 
 ---
 
-## Technical Details
+## Workflow ✅
 
-### Technologies/Components Used
+### 1. **Resume Upload** (landing.html)
+- User clicks "Analyze Resume" button
+- Selects a text file with resume content
+- File is sent to backend with AI analysis request
 
-**For Software:**
-- Languages used: [e.g., JavaScript, Python, Java]
-- Frameworks used: [e.g., React, Django, Spring Boot]
-- Libraries used: [e.g., axios, pandas, JUnit]
-- Tools used: [e.g., VS Code, Git, Docker]
+### 2. **AI Analysis** (server.js)
+Backend uses Gemini AI to extract:
+- Full name
+- Skills (JavaScript, React, Python, etc.)
+- Years of experience
+- Career gaps
+- Specializations
+- Potential target roles
+- Market demand skills
+- Improvement areas
 
-**For Hardware:**
-- Main components: [List main components]
-- Specifications: [Technical specifications]
-- Tools required: [List tools needed]
+### 3. **Database Storage** (Supabase)
+- Analysis results stored in `resumes` table
+- Data persists permanently
+- Available for future reference
+
+### 4. **Dashboard Population** (index.html)
+All dashboard features auto-populate:
+
+#### Resume Summary Card
+- User name from resume
+- Years of experience
+- Number of skills found
+- Target roles identified
+- Top 3 skills highlighted
+
+#### Skill-Sync Meter
+- Calculates alignment based on detected skills
+- Shows progress vs market demand
+- Updates with each new resume
+
+#### Skill Preparation Chart
+- Lists all detected skills from resume
+- Assigns competency levels
+- Shows market demand for each skill
+- Color-codes by gap size
+
+#### Career Roadmap
+- Projects timeline based on years of experience
+- Shows path from current level → Senior role
+- Calculates accelerated timeline
+
+#### Growth Areas
+- Lists improvements from AI analysis
+- Prioritized recommendations
+- Actionable growth paths
+
+### 5. **AI-Powered Features** (Using Resume Context)
+All features use resume data for personalization:
+
+#### Decision Paralysis Breaker
+- Takes user's blocker/challenge
+- **Uses resume data**: Skills, experience, background
+- Generates 7-day micro-action plan
+- Tailored to user's specific background
+
+#### Interview Prep
+- Takes user's interview fear/challenge
+- **Uses resume data**: Skills, target roles, experience
+- Generates targeted prep strategy
+- Specific to roles they're targeting
+
+#### Skill Gaps Analysis
+- Takes target role and current skills
+- **Uses resume data**: Extracted skills, years of experience
+- Prioritizes learning based on background
+- Realistic timeline for skill acquisition
 
 ---
 
-## Features
+## Data Flow Diagram
 
-List the key features of your project:
-- Feature 1: [Description]
-- Feature 2: [Description]
-- Feature 3: [Description]
-- Feature 4: [Description]
-
----
-
-## Implementation
-
-### For Software:
-
-#### Installation
-```bash
-[Installation commands - e.g., npm install, pip install -r requirements.txt]
+```
+Resume Upload (landing.html)
+        ↓
+  Read File Content
+        ↓
+  Send to Backend (server.js)
+        ↓
+  Gemini AI Analyzes Resume
+        ↓
+  Extract Skills, Experience, Gaps, etc.
+        ↓
+  Store in Supabase Database
+        ↓
+  Return Analysis to Frontend
+        ↓
+  Dashboard Loads Data (index.html)
+        ↓
+  ┌─────────────────────────────────────┐
+  │ Resume Summary Card                 │
+  │ Skill-Sync Meter                    │
+  │ Skill Preparation Chart             │
+  │ Career Roadmap                      │
+  │ Growth Areas                        │
+  └─────────────────────────────────────┘
+        ↓
+  User Interacts with Features
+        ↓
+  ┌─────────────────────────────────────┐
+  │ Decision Breaker (uses resume)      │
+  │ Interview Prep (uses resume)        │
+  │ Skill Gaps (uses resume)            │
+  │ Learning Feed (curated for you)     │
+  └─────────────────────────────────────┘
 ```
 
-#### Run
-```bash
-[Run commands - e.g., npm start, python app.py]
+---
+
+## Setup & Testing
+
+### Quick Setup (5 min)
+
+1. **Set environment variables** (.env):
+```
+GEMINI_API_KEY=your_key
+SUPABASE_URL=your_url
+SUPABASE_ANON_KEY=your_key
+PORT=3000
 ```
 
-### For Hardware:
+2. **Install dependencies**:
+```bash
+npm install
+```
 
-#### Components Required
-[List all components needed with specifications]
+3. **Start backend server**:
+```bash
+npm start
+```
 
-#### Circuit Setup
-[Explain how to set up the circuit]
-
----
-
-## Project Documentation
-
-### For Software:
-
-#### Screenshots (Add at least 3)
-
-![Screenshot1](Add screenshot 1 here with proper name)
-*Add caption explaining what this shows*
-
-![Screenshot2](Add screenshot 2 here with proper name)
-*Add caption explaining what this shows*
-
-![Screenshot3](Add screenshot 3 here with proper name)
-*Add caption explaining what this shows*
-
-#### Diagrams
-
-**System Architecture:**
-
-![Architecture Diagram](docs/architecture.png)
-*Explain your system architecture - components, data flow, tech stack interaction*
-
-**Application Workflow:**
-
-![Workflow](docs/workflow.png)
-*Add caption explaining your workflow*
+4. **Test workflow**:
+   - Open http://localhost:3000/landing.html
+   - Click "Analyze Resume"
+   - Upload a .txt file with resume content
+   - Check Supabase dashboard for stored data
+   - Go to http://localhost:3000/index.html
+   - Dashboard should auto-populate from database
 
 ---
 
-### For Hardware:
+## Resume Format (Text File)
 
-#### Schematic & Circuit
+Your resume text file should include:
 
-![Circuit](Add your circuit diagram here)
-*Add caption explaining connections*
+```
+John Doe
 
-![Schematic](Add your schematic diagram here)
-*Add caption explaining the schematic*
+5 years of software development experience
 
-#### Build Photos
+Skills:
+- JavaScript (5 years)
+- React (3 years)
+- Node.js (4 years)
+- Python (2 years)
+- SQL and MongoDB
+- Git and CI/CD
 
-![Team](Add photo of your team here)
+Experience:
+- Senior Frontend Developer at TechCorp (2020-2024)
+- Full Stack Developer at StartupXYZ (2019-2020)
+- Junior Developer at OldCo (2018-2019)
 
-![Components](Add photo of your components here)
-*List out all components shown*
+Education:
+- B.S. Computer Science, State University
 
-![Build](Add photos of build process here)
-*Explain the build steps*
+Key Achievements:
+- Led React migration (200+ components)
+- Reduced bundle size by 40%
+- Mentored 5+ junior developers
+```
 
-![Final](Add photo of final product here)
-*Explain the final build*
+The AI will extract skills, calculate experience, identify gaps, and suggest opportunities.
 
 ---
 
-## Additional Documentation
+## Features Using Resume Data
 
-### For Web Projects with Backend:
+### 1. Resume Summary Card
+**Shows**: Name, Experience, Skills Count, Target Roles, Top Skills
 
-#### API Documentation
+**Updated when**: New resume uploaded
 
-**Base URL:** `https://api.yourproject.com`
+### 2. Skill-Sync Meter
+**Shows**: % alignment based on detected skills
 
-##### Endpoints
+**Formula**: `(Number of Skills × 15) + 40`
 
-**GET /api/endpoint**
-- **Description:** [What it does]
-- **Parameters:**
-  - `param1` (string): [Description]
-  - `param2` (integer): [Description]
-- **Response:**
-```json
-{
-  "status": "success",
-  "data": {}
+**Example**: 4 skills detected = 60 + 40 = 100%
+
+### 3. Skill Preparation Chart
+**Shows**: Each detected skill with competency level
+
+**Levels**: Based on resume mentions
+- Recent/Primary skill: 70-90%
+- Secondary skill: 50-70%
+- Foundational: 30-50%
+
+### 4. Career Roadmap
+**Shows**: Timeline from current level to senior
+
+**Timeline**: 
+- Current: User's experience level
+- Mid-level: Half of time to senior
+- Senior: Full timeline (18mo - years of experience × 3)
+
+**Example**: 5 years exp = 3 months to senior
+
+### 5. Growth Areas
+**Shows**: AI-recommended improvements
+
+**Source**: AI analysis of resume gaps vs market demand
+
+### 6. Decision Breaker
+**Input**: User's challenge/blocker
+
+**Context**: 
+- Their skills from resume
+- Their years of experience
+- Their background
+
+**Output**: Personalized 7-day micro-action plan
+
+### 7. Interview Prep
+**Input**: Interview fear/challenge
+
+**Context**:
+- Their skills from resume
+- Their target roles from resume
+- Their years of experience
+
+**Output**: Targeted interview preparation strategy
+
+---
+
+## Backend API Endpoints
+
+### Upload & Analyze Resume
+```
+POST /api/upload-resume
+Body: {
+  resumeText: "resume content...",
+  fileName: "resume.txt",
+  userId: "user123"
 }
-```
-
-**POST /api/endpoint**
-- **Description:** [What it does]
-- **Request Body:**
-```json
-{
-  "field1": "value1",
-  "field2": "value2"
-}
-```
-- **Response:**
-```json
-{
-  "status": "success",
-  "message": "Operation completed"
-}
-```
-
-[Add more endpoints as needed...]
-
----
-
-### For Mobile Apps:
-
-#### App Flow Diagram
-
-![App Flow](docs/app-flow.png)
-*Explain the user flow through your application*
-
-#### Installation Guide
-
-**For Android (APK):**
-1. Download the APK from [Release Link]
-2. Enable "Install from Unknown Sources" in your device settings:
-   - Go to Settings > Security
-   - Enable "Unknown Sources"
-3. Open the downloaded APK file
-4. Follow the installation prompts
-5. Open the app and enjoy!
-
-**For iOS (IPA) - TestFlight:**
-1. Download TestFlight from the App Store
-2. Open this TestFlight link: [Your TestFlight Link]
-3. Click "Install" or "Accept"
-4. Wait for the app to install
-5. Open the app from your home screen
-
-**Building from Source:**
-```bash
-# For Android
-flutter build apk
-# or
-./gradlew assembleDebug
-
-# For iOS
-flutter build ios
-# or
-xcodebuild -workspace App.xcworkspace -scheme App -configuration Debug
-```
-
----
-
-### For Hardware Projects:
-
-#### Bill of Materials (BOM)
-
-| Component | Quantity | Specifications | Price | Link/Source |
-|-----------|----------|----------------|-------|-------------|
-| Arduino Uno | 1 | ATmega328P, 16MHz | ₹450 | [Link] |
-| LED | 5 | Red, 5mm, 20mA | ₹5 each | [Link] |
-| Resistor | 5 | 220Ω, 1/4W | ₹1 each | [Link] |
-| Breadboard | 1 | 830 points | ₹100 | [Link] |
-| Jumper Wires | 20 | Male-to-Male | ₹50 | [Link] |
-| [Add more...] | | | | |
-
-**Total Estimated Cost:** ₹[Amount]
-
-#### Assembly Instructions
-
-**Step 1: Prepare Components**
-1. Gather all components listed in the BOM
-2. Check component specifications
-3. Prepare your workspace
-![Step 1](images/assembly-step1.jpg)
-*Caption: All components laid out*
-
-**Step 2: Build the Power Supply**
-1. Connect the power rails on the breadboard
-2. Connect Arduino 5V to breadboard positive rail
-3. Connect Arduino GND to breadboard negative rail
-![Step 2](images/assembly-step2.jpg)
-*Caption: Power connections completed*
-
-**Step 3: Add Components**
-1. Place LEDs on breadboard
-2. Connect resistors in series with LEDs
-3. Connect LED cathodes to GND
-4. Connect LED anodes to Arduino digital pins (2-6)
-![Step 3](images/assembly-step3.jpg)
-*Caption: LED circuit assembled*
-
-**Step 4: [Continue for all steps...]**
-
-**Final Assembly:**
-![Final Build](images/final-build.jpg)
-*Caption: Completed project ready for testing*
-
----
-
-### For Scripts/CLI Tools:
-
-#### Command Reference
-
-**Basic Usage:**
-```bash
-python script.py [options] [arguments]
-```
-
-**Available Commands:**
-- `command1 [args]` - Description of what command1 does
-- `command2 [args]` - Description of what command2 does
-- `command3 [args]` - Description of what command3 does
-
-**Options:**
-- `-h, --help` - Show help message and exit
-- `-v, --verbose` - Enable verbose output
-- `-o, --output FILE` - Specify output file path
-- `-c, --config FILE` - Specify configuration file
-- `--version` - Show version information
-
-**Examples:**
-
-```bash
-# Example 1: Basic usage
-python script.py input.txt
-
-# Example 2: With verbose output
-python script.py -v input.txt
-
-# Example 3: Specify output file
-python script.py -o output.txt input.txt
-
-# Example 4: Using configuration
-python script.py -c config.json --verbose input.txt
-```
-
-#### Demo Output
-
-**Example 1: Basic Processing**
-
-**Input:**
-```
-This is a sample input file
-with multiple lines of text
-for demonstration purposes
-```
-
-**Command:**
-```bash
-python script.py sample.txt
-```
-
-**Output:**
-```
-Processing: sample.txt
-Lines processed: 3
-Characters counted: 86
-Status: Success
-Output saved to: output.txt
-```
-
-**Example 2: Advanced Usage**
-
-**Input:**
-```json
-{
-  "name": "test",
-  "value": 123
-}
-```
-
-**Command:**
-```bash
-python script.py -v --format json data.json
-```
-
-**Output:**
-```
-[VERBOSE] Loading configuration...
-[VERBOSE] Parsing JSON input...
-[VERBOSE] Processing data...
-{
-  "status": "success",
-  "processed": true,
-  "result": {
-    "name": "test",
-    "value": 123,
-    "timestamp": "2024-02-07T10:30:00"
+Response: {
+  success: true,
+  analysis: {
+    fullName: "John Doe",
+    skills: ["JavaScript", "React", ...],
+    yearsExperience: 5,
+    potentialRoles: ["Senior Dev", ...],
+    improvements: ["AWS Certification", ...],
+    ...
   }
 }
-[VERBOSE] Operation completed in 0.23s
+```
+
+### Get Stored Resumes
+```
+GET /api/resumes?userId=user123
+Response: {
+  count: 2,
+  resumes: [...]
+}
+```
+
+### Analyze Stored Resume
+```
+POST /api/analyze-stored-resume
+Body: {
+  resumeId: "uuid-from-database"
+}
+Response: {
+  success: true,
+  resume: {...},
+  analysis: {...}
+}
+```
+
+### Decision Breaker
+```
+POST /api/decision-breaker
+Body: {
+  blocker: "Based on resume (5yr exp, skills: React, Python...), user blocker: ..."
+}
+Response: {
+  actionPlan: ["Day 1: ...", "Day 2: ...", ...]
+}
+```
+
+### Interview Prep
+```
+POST /api/interview-prep
+Body: {
+  fear: "User background: 5yr exp, skills: React, target roles: Senior Dev. Fear: ..."
+}
+Response: {
+  prepPlan: {...}
+}
 ```
 
 ---
 
-## Project Demo
+## Troubleshooting
 
-### Video
-[Add your demo video link here - YouTube, Google Drive, etc.]
+### Resume not appearing on dashboard
+1. Check browser console for errors
+2. Verify backend server is running (`npm start`)
+3. Check Supabase table has data
+4. Try refreshing dashboard page
 
-*Explain what the video demonstrates - key features, user flow, technical highlights*
+### "Supabase not configured" message
+1. Verify .env file has SUPABASE_URL and SUPABASE_ANON_KEY
+2. Create tables in Supabase (see DATABASE_SETUP.md)
+3. Restart server after updating .env
 
-### Additional Demos
-[Add any extra demo materials/links - Live site, APK download, online demo, etc.]
+### Dashboard features show generic data
+1. This is normal before resume upload
+2. Upload resume on landing page
+3. Features will populate with your data
 
----
-
-## AI Tools Used (Optional - For Transparency Bonus)
-
-If you used AI tools during development, document them here for transparency:
-
-**Tool Used:** [e.g., GitHub Copilot, v0.dev, Cursor, ChatGPT, Claude]
-
-**Purpose:** [What you used it for]
-- Example: "Generated boilerplate React components"
-- Example: "Debugging assistance for async functions"
-- Example: "Code review and optimization suggestions"
-
-**Key Prompts Used:**
-- "Create a REST API endpoint for user authentication"
-- "Debug this async function that's causing race conditions"
-- "Optimize this database query for better performance"
-
-**Percentage of AI-generated code:** [Approximately X%]
-
-**Human Contributions:**
-- Architecture design and planning
-- Custom business logic implementation
-- Integration and testing
-- UI/UX design decisions
-
-*Note: Proper documentation of AI usage demonstrates transparency and earns bonus points in evaluation!*
+### Decision Breaker/Interview Prep not using resume data
+1. Ensure resume was successfully uploaded
+2. Check browser console for API errors
+3. Verify resumeContext variable is set (in console: `resumeContext`)
 
 ---
 
-## Team Contributions
+## Files Modified/Created
 
-- [Name 1]: [Specific contributions - e.g., Frontend development, API integration, etc.]
-- [Name 2]: [Specific contributions - e.g., Backend development, Database design, etc.]
-- [Name 3]: [Specific contributions - e.g., UI/UX design, Testing, Documentation, etc.]
+### Modified:
+- `package.json` - Added @supabase/supabase-js, multer
+- `.env.example` - Added Supabase credentials
+- `server.js` - Added resume storage endpoints
+- `landing.html` - Sends resume to backend API
+- `index.html` - Loads and displays resume data, uses context
+
+### Created:
+- `DATABASE_SETUP.md` - Database setup guide
+- `SETUP_GUIDE.md` - Quick setup instructions
+- `README.md` - This file
+
+### Database Tables:
+- `resumes` - Stores resume text and AI analysis
+- `dashboard_analytics` - Tracks user metrics
 
 ---
 
-## License
+## Next Steps
 
-This project is licensed under the [LICENSE_NAME] License - see the [LICENSE](LICENSE) file for details.
-
-**Common License Options:**
-- MIT License (Permissive, widely used)
-- Apache 2.0 (Permissive with patent grant)
-- GPL v3 (Copyleft, requires derivative works to be open source)
+1. ✅ Upload a resume
+2. ✅ See dashboard auto-populate
+3. ✅ Use Decision Breaker with resume context
+4. ✅ Use Interview Prep with resume context
+5. Test all features with different resumes
+6. Add authentication for multi-user support
+7. Deploy backend to production
 
 ---
 
-Made with ❤️ at TinkerHub
+## Example Results
+
+### After Resume Upload:
+```
+✅ Resume: "John Doe"
+   - 5 years experience
+   - 8 skills detected
+   - 3 potential roles identified
+   
+Skills Found:
+  - JavaScript (75%)
+  - React (65%)
+  - Python (55%)
+  - Node.js (70%)
+
+Growth Areas:
+  ↗️ AWS Certification
+  ↗️ System Design Patterns
+  ↗️ DevOps Fundamentals
+
+Career Path:
+  💼 Current: Mid-Level (5 years)
+  🚀 Senior Role: ~3 months
+```
+
+---
+
+## Support
+
+For issues:
+1. Check server console: `npm start`
+2. Check browser DevTools console
+3. Visit http://localhost:3000/api/health
+4. See DATABASE_SETUP.md for database help
