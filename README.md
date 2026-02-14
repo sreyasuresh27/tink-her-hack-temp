@@ -15,7 +15,7 @@ Your dashboard now works **entirely based on resume analysis**. Upload a resume 
 
 ### 2. **AI Analysis** (server.js)
 Backend uses Gemini AI to extract:
-- Full name
+- Sreya Suresh
 - Skills (JavaScript, React, Python, etc.)
 - Years of experience
 - Career gaps
@@ -29,15 +29,7 @@ Backend uses Gemini AI to extract:
 - Data persists permanently
 - Available for future reference
 
-### 4. **Dashboard Population** (index.html)
-All dashboard features auto-populate:
-
-#### Resume Summary Card
-- User name from resume
-- Years of experience
-- Number of skills found
-- Target roles identified
-- Top 3 skills highlighted
+#
 
 #### Skill-Sync Meter
 - Calculates alignment based on detected skills
@@ -408,3 +400,4 @@ For issues:
 2. Check browser DevTools console
 3. Visit http://localhost:3000/api/health
 4. See DATABASE_SETUP.md for database help
+
